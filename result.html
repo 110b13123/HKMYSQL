@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隨機生成表格行</title>
+</head>
+
+<body>
+    <label for="searchID">Search ID: </label>
+    <input type="number" id="searchID" min="1" max="100">
+    <button onclick="searchByID()">Search</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Gender</th>
+                <th>Height</th>
+                <th>Age</th>
+                <th>Ask_gender</th>
+                <th>Ask_height_up</th>
+                <th>Ask_height_low</th>
+                <th>Ask_age_up</th>
+                <th>Ask_age_low</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+    </table>
+
+    <button onclick="generateRandomRows()">Generate Random Rows</button>
+
+    <script>
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomGender() {
+            return getRandomInt(0, 1) ? 'Male' : 'Female';
+        }
+
+        function generateRandomRow(existingIDs) {
+            let randomID;
+            do {
+                randomID = getRandomInt(1, 100);
+            } while (existingIDs.includes(randomID));
+
+            existingIDs.push(randomID);
+
+            let randomRow = [];
+            randomRow.push(randomID); // ID
+            randomRow.push(getRandomGender()); // Gender
+            randomRow.push(getRandomInt(145, 200)); // Height
+            randomRow.push(getRandomInt(15, 40)); // Age
+            randomRow.push(getRandomGender()); // Ask_gender
+            let askHeightUp = getRandomInt(145, 200);
+            randomRow.push(askHeightUp); // Ask_height_up
+            randomRow.push(getRandomInt(145, askHeightUp)); // Ask_height_low (less than Ask_height_up)
+            let askAgeUp = getRandomInt(15, 40);
+            randomRow.push(askAgeUp); // Ask_age_up
+            randomRow.push(getRandomInt(15, askAgeUp)); // Ask_age_low (less than Ask_age_up)
+
+            return randomRow;
+        }
+
+        function addRandomRowToTable(existingIDs) {
+            let randomRow = generateRandomRow(existingIDs);
+            let tbody = document.getElementById('dataBody');
+
+            let tr = document.createElement('tr');
+            for (let i = 0; i < randomRow.length; i++) {
+                let td = document.createElement('td');
+                td.innerHTML = randomRow[i];
+                tr.appendChild(td);
+            }
+
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function () {
+                tbody.removeChild(tr);
+
+                // Remove ID from existing IDs array
+                const index = existingIDs.indexOf(randomRow[0]);
+                if (index !== -1) {
+                    existingIDs.splice(index, 1);
+                }
+
+                // Check if it's the last row, and redirect if true
+                if (tbody.childElementCount === 0) {
+                    window.location.href = "delete.html"; // Replace with your desired URL
+                }
+            };
+
+            let td = document.createElement('td');
+            td.appendChild(deleteButton);
+            tr.appendChild(td);
+
+            tbody.appendChild(tr);
+        }
+
+        function generateRandomRows() {
+            let existingIDs = [];
+            // Generate a random number of rows (between 1 and 10)
+            let numRandomRows = getRandomInt(1, 10);
+
+            // Add random rows to the table
+            for (let i = 0; i < numRandomRows; i++) {
+                addRandomRowToTable(existingIDs);
+            }
+        }
+
+        function searchByID() {
+            let searchID = document.getElementById('searchID').value;
+            let tbody = document.getElementById('dataBody');
+            let rows = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let idCell = rows[i].getElementsByTagName('td')[0];
+                if (idCell.innerHTML === searchID) {
+                    rows[i].style.backgroundColor = 'yellow';
+                } else {
+                    rows[i].style.backgroundColor = '';
+                }
+            }
+        }
+
+        // Add an initial row for demonstration
+        generateRandomRows();
+    </script>
+</body>
+
+</html>

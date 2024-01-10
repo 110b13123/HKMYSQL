@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,300,400,500,700,900&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background: url("1.jpg") no-repeat center center / cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login {
+            width: 600px;
+            height: 400px;
+            background-color: rgba(0, 0, 0, .5);
+            border-radius: 10px;
+            border: 10px solid #fff;
+            box-shadow: 0 0 60px #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form {
+            width: 400px;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #fff;
+        }
+
+        .form h2 {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #fff;
+        }
+
+        .form .group {
+            margin-bottom: 20px;
+        }
+
+        .form label {
+            line-height: 2;
+        }
+
+        .form input {
+            width: 100%;
+            border: 1px solid #aaa;
+            line-height: 3;
+            border-radius: 5px;
+        }
+
+        .form .btn-group {
+            font-size: 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .form .btn {
+            font-size: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #6ab4fe;
+            width: 190px;
+            padding: 10px 0;
+            color: #fff;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        .form .btn+.btn {
+            margin-left: 20px;
+        }
+    </style>
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="login">
+        <form class="form">
+            <h2>會員登入</h2>
+            <div class="group">
+                <label for="user_id">帳號</label>
+                <input type="text" name="user_id" id="user_id">
+            </div>
+            <div class="group">
+                <label for="user_password">密碼</label>
+                <input type="password" name="user_password" id="user_password">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="login">登入</button>
+            </div>
+        </form>
+        <script>
+            let data = {
+                "seal@gmail.com": "123456789",
+            };
+        
+            function login() {
+                let email = document.getElementById("user_id").value;
+                let password = document.getElementById("user_password").value;
+        
+                if (data[email] !== undefined) {
+                    if (data[email] === password) {
+                       
+                        window.location.href = "index.html";
+                        // 如果登入成功，可以導向到另一個頁面
+                    } else {
+                        alert("登入失敗，密碼錯誤");
+                    }
+                } else {
+                    alert("登入失敗，用戶不存在");
+                }
+        
+                event.preventDefault();
+            }
+            document.getElementById("login").addEventListener("click", login);
+        </script>
+    </div>
+</body>
+</html>
